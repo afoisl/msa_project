@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: order-server
+
+server:
+  port: 19092
