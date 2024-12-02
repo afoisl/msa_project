@@ -16,13 +16,13 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/auth/signIn")
+    @PostMapping("/auth/sign-in")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody RequestDto signInRequest){
         String token = authService.signIn(signInRequest.getUsername(), signInRequest.getPassword());
         return ResponseEntity.ok(new AuthResponse(token));
     }
 
-    @PostMapping("/auth/signUp")
+    @PostMapping("/auth/sign-up")
     public ResponseEntity<?> signUp(@RequestBody RequestDto signUpRequest) {
         User createdUser = authService.signUp(signUpRequest.getUsername(), signUpRequest.getPassword());
         return ResponseEntity.ok(createdUser);
