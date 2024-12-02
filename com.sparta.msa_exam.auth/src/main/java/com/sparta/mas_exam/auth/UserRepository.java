@@ -1,7 +1,10 @@
 package com.sparta.mas_exam.auth;
 
-import com.sparta.mas_exam.auth.core.User;
+import com.sparta.mas_exam.auth.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Integer> {
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByUsername(String username);
 }
