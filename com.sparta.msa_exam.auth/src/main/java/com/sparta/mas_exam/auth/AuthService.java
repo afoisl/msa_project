@@ -24,12 +24,6 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    /**
-     * AuthService 생성자.
-     * Base64 URL 인코딩된 비밀 키를 디코딩하여 HMAC-SHA 알고리즘에 적합한 SecretKey 객체를 생성합니다.
-     *
-     * @param secretKey Base64 URL 인코딩된 비밀 키
-     */
     public AuthService(@Value("${service.jwt.secret-key}") String secretKey,
                        UserRepository userRepository,
                        PasswordEncoder passwordEncoder) {
@@ -38,12 +32,6 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    /**
-     * 사용자 ID를 받아 JWT 액세스 토큰을 생성합니다.
-     *
-     * @param username 사용자 ID
-     * @return 생성된 JWT 액세스 토큰
-     */
     public String createAccessToken(String username, String role) {
         return Jwts.builder()
                 .claim("user_name", username)
@@ -55,12 +43,6 @@ public class AuthService {
                 .compact();
     }
 
-    /**
-     * 사용자 등록
-     *
-     * @param username 사용자 정보
-     * @return 저장된 사용자
-     */
     public User signUp(String username, String password) {
         String encodedPassword = passwordEncoder.encode(password);
         User user = User.builder()
@@ -70,13 +52,6 @@ public class AuthService {
         return userRepository.save(user);
     }
 
-    /**
-     * 사용자 인증
-     *
-     * @param username 사용자 ID
-     * @param password 비밀번호
-     * @return JWT 액세스 토큰
-     */
     public String signIn(String username, String password) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user ID or password"));

@@ -1,6 +1,7 @@
 package com.sparta.mas_exam.auth;
 
 import com.sparta.mas_exam.auth.domain.User;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,29 +18,17 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/auth/sign-in")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody RequestDto signInRequest){
+    public ResponseEntity<?> signIn(@RequestBody AuthRequest signInRequest,
+                                                    HttpServletResponse res){
         String token = authService.signIn(signInRequest.getUsername(), signInRequest.getPassword());
-        return ResponseEntity.ok(new AuthResponse(token));
+
+        res.addHeader("Authorization", "Bearer " + token);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/auth/sign-up")
-    public ResponseEntity<?> signUp(@RequestBody RequestDto signUpRequest) {
+    public ResponseEntity<?> signUp(@RequestBody AuthRequest signUpRequest) {
         User createdUser = authService.signUp(signUpRequest.getUsername(), signUpRequest.getPassword());
         return ResponseEntity.ok(createdUser);
-    }
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    static class AuthResponse {
-        private String access_token;
-    }
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    static class RequestDto {
-        private String username;
-        private String password;
     }
 }
