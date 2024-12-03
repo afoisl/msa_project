@@ -23,7 +23,6 @@ public class AuthConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 // 요청에 대한 접근 권한을 설정합니다.
                 .authorizeHttpRequests(authorize -> authorize
-                        // /auth/signIn 경로에 대한 접근을 허용합니다. 이 경로는 인증 없이 접근할 수 있습니다.
                         .requestMatchers("/auth/sign-in").permitAll()
                         .requestMatchers("/auth/sign-up").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
