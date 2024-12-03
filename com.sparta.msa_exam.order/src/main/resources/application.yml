@@ -2,6 +2,13 @@ spring:
   application:
     name: order-service
 
+  data:
+    redis:
+      host: localhost
+      username: default
+      password: systempass
+
+
 server:
   port: 19092
 

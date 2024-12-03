@@ -1,5 +1,7 @@
 package com.sparta.mas_exam.order.controller;
 
+import com.sparta.mas_exam.order.dto.OrderAddRequest;
+import com.sparta.mas_exam.order.dto.OrderResponse;
 import com.sparta.mas_exam.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +22,8 @@ public class OrderController {
     }
 
     @PutMapping("/orders/{orderId}")
-    public ResponseEntity<Long> addProduct(@PathVariable Long orderId, @RequestBody Long productId) {
-        Long id = orderService.addProduct(orderId, productId);
+    public ResponseEntity<Long> addProduct(@PathVariable Long orderId, @RequestBody OrderAddRequest add) {
+        Long id = orderService.addProduct(orderId, add);
         return ResponseEntity.ok(id);  // 상태 코드와 본문을 함께 설정
     }
 

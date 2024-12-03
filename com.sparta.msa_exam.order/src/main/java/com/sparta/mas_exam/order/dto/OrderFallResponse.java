@@ -1,6 +1,5 @@
-package com.sparta.mas_exam.order.controller;
+package com.sparta.mas_exam.order.dto;
 
-import com.sparta.mas_exam.order.domain.Order;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

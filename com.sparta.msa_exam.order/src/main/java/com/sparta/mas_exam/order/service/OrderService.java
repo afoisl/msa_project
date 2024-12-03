@@ -1,10 +1,12 @@
 package com.sparta.mas_exam.order.service;
 
 import com.sparta.mas_exam.order.client.ProductClient;
-import com.sparta.mas_exam.order.controller.OrderFallResponse;
-import com.sparta.mas_exam.order.controller.OrderResponse;
 import com.sparta.mas_exam.order.domain.Order;
-import com.sparta.mas_exam.order.domain.OrderRepository;
+import com.sparta.mas_exam.order.domain.OrderProduct;
+import com.sparta.mas_exam.order.dto.OrderAddRequest;
+import com.sparta.mas_exam.order.dto.OrderFallResponse;
+import com.sparta.mas_exam.order.dto.OrderResponse;
+import com.sparta.mas_exam.order.repository.OrderRepository;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +26,11 @@ public class OrderService {
 
     @CircuitBreaker(name = "orderService", fallbackMethod = "fallbackCreate")
     public Long create(List<Long> productIds, String userId) {
-        List<Long> validProductIds = productIds.stream()
-                .filter(this::isValidProduct) // 유효한 상품만 필터링
+        List<OrderProduct> validProductIds = productIds.stream()
+                .filter(this::isValidProduct)// 유효한 상품만 필터링
+                .map(productId -> OrderProduct.builder()
+                        .productId(productId) // OrderProduct 객체를 생성
+                        .build())
                 .toList();
 
         Order order = Order.builder()
@@ -43,15 +48,15 @@ public class OrderService {
         return new OrderFallResponse(null, productIds, userId, fallbackMessage);
     }
 
-    public Long addProduct(Long orderId, Long productId) {
+    public Long addProduct(Long orderId, OrderAddRequest add) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다."));
 
-        if (!isValidProduct(productId)) {
+        if (!isValidProduct(add.productId())) {
             throw new IllegalArgumentException("유효하지 않은 상품입니다.");
         }
 
-        order.addProduct(productId);
+        order.addProduct(OrderProduct.builder().productId(add.productId()).build());
 
         return orderRepository.save(order).getId();
     }

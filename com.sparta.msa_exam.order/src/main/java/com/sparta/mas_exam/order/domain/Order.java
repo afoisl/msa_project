@@ -20,10 +20,8 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ElementCollection
-    @CollectionTable(name = "order_items", joinColumns = @JoinColumn(name = "order_id"))
-    @Column(name = "product_id")
-    private List<Long> productIds;
+    @OneToMany(mappedBy = "order")
+    List<OrderProduct> productIds;
 
     private LocalDateTime createdAt;
     private String createdBy;
@@ -40,7 +38,7 @@ public class Order {
     }
 
     // 주문에 상품 추가
-    public void addProduct(Long productId) {
-        this.productIds.add(productId);
+    public void addProduct(OrderProduct product) {
+        this.productIds.add(product);
     }
 }
