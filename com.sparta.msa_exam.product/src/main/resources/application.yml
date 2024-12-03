@@ -1,8 +1,8 @@
 spring:
   application:
     name: product-service
+
   datasource:
-    url: jdbc:h2:~/productdb;DB_CLOSE_DELAY=-1
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -23,14 +23,21 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+  profiles:
+    active: product
 
 logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
 
-server:
-  port: 19093
+management:
+  zipkin:
+    tracing:
+      endpoint: "http://localhost:9411/api/v2/spans"
+  tracing:
+    sampling:
+      probability: 1.0
 
 eureka:
   client:

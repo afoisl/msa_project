@@ -1,0 +1,6 @@
+
+server:
+  port: 19093
+spring:
+  datasource:
+    url: jdbc:h2:~/productdb;DB_CLOSE_DELAY=-1
