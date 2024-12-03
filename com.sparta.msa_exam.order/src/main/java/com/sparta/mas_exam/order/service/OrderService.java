@@ -8,6 +8,7 @@ import com.sparta.mas_exam.order.domain.OrderRepository;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,6 +56,7 @@ public class OrderService {
         return orderRepository.save(order).getId();
     }
 
+    @Cacheable(cacheNames = "orderCache", key = "args[0]")
     public OrderResponse get(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다."));
