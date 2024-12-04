@@ -72,7 +72,7 @@ public class OrderService {
                 .build();
     }
 
-    // 상품이 존재 여부 확인
+    // 상품 존재 여부 확인
     private boolean isValidProduct(Long productId) {
         return productClient.getProduct(productId) != null;
     }
